@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "account_keychains",
+  "info": {
+    "singularName": "account-keychain",
+    "pluralName": "account-keychains",
+    "displayName": "Account keychain",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "publicKey": {
+      "type": "text"
+    },
+    "privateKey": {
+      "type": "text"
+    }
+  }
+}

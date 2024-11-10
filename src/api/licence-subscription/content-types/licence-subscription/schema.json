@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "licence_subscriptions",
+  "info": {
+    "singularName": "licence-subscription",
+    "pluralName": "licence-subscriptions",
+    "displayName": "Licence subscription"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "startDate": {
+      "type": "datetime"
+    },
+    "expirationDate": {
+      "type": "datetime"
+    },
+    "automaticRenewal": {
+      "type": "boolean"
+    }
+  }
+}

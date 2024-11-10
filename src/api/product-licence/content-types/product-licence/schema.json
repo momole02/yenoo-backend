@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_licences",
+  "info": {
+    "singularName": "product-licence",
+    "pluralName": "product-licences",
+    "displayName": "Product licence"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "price": {
+      "type": "decimal"
+    },
+    "isFree": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

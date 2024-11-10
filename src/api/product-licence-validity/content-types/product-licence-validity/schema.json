@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_licence_validities",
+  "info": {
+    "singularName": "product-licence-validity",
+    "pluralName": "product-licence-validities",
+    "displayName": "Product licence validity"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "days": {
+      "type": "integer"
+    },
+    "months": {
+      "type": "integer"
+    },
+    "year": {
+      "type": "integer"
+    }
+  }
+}
