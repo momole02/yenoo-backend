@@ -369,6 +369,304 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAccountKeychainAccountKeychain
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'account_keychains';
+  info: {
+    description: '';
+    displayName: 'Account keychain';
+    pluralName: 'account-keychains';
+    singularName: 'account-keychain';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::account-keychain.account-keychain'
+    > &
+      Schema.Attribute.Private;
+    owner: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    privateKey: Schema.Attribute.Text;
+    publicKey: Schema.Attribute.Text;
+    publishedAt: Schema.Attribute.DateTime;
+    uid: Schema.Attribute.UID;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiLicenceSubscriptionLicenceSubscription
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'licence_subscriptions';
+  info: {
+    description: '';
+    displayName: 'Licence subscription';
+    pluralName: 'licence-subscriptions';
+    singularName: 'licence-subscription';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    automaticRenewal: Schema.Attribute.Boolean;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    expirationDate: Schema.Attribute.DateTime;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::licence-subscription.licence-subscription'
+    > &
+      Schema.Attribute.Private;
+    owner: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    parent_subscription: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::licence-subscription.licence-subscription'
+    >;
+    product_licence: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::product-licence.product-licence'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    startDate: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiProductCategoryProductCategory
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_categories';
+  info: {
+    displayName: 'Product category';
+    pluralName: 'product-categories';
+    singularName: 'product-category';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    label: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-category.product-category'
+    > &
+      Schema.Attribute.Private;
+    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiProductLicenceValidityProductLicenceValidity
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_licence_validities';
+  info: {
+    description: '';
+    displayName: 'Product licence validity';
+    pluralName: 'product-licence-validities';
+    singularName: 'product-licence-validity';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    days: Schema.Attribute.Integer;
+    label: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-licence-validity.product-licence-validity'
+    > &
+      Schema.Attribute.Private;
+    months: Schema.Attribute.Integer;
+    product_licences: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-licence.product-licence'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    year: Schema.Attribute.Integer;
+  };
+}
+
+export interface ApiProductLicenceProductLicence
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_licences';
+  info: {
+    displayName: 'Product licence';
+    pluralName: 'product-licences';
+    singularName: 'product-licence';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isFree: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    label: Schema.Attribute.String;
+    licence_subscriptions: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::licence-subscription.licence-subscription'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-licence.product-licence'
+    > &
+      Schema.Attribute.Private;
+    price: Schema.Attribute.Decimal;
+    product_licence_validity: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::product-licence-validity.product-licence-validity'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiProductServiceProductService
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_services';
+  info: {
+    description: '';
+    displayName: 'Product service';
+    pluralName: 'product-services';
+    singularName: 'product-service';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.RichText;
+    label: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-service.product-service'
+    > &
+      Schema.Attribute.Private;
+    price: Schema.Attribute.Decimal;
+    publishedAt: Schema.Attribute.DateTime;
+    service_subscriptions: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::service-subscription.service-subscription'
+    >;
+    slug: Schema.Attribute.UID<'label'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiProductProduct extends Struct.CollectionTypeSchema {
+  collectionName: 'products';
+  info: {
+    description: '';
+    displayName: 'Product';
+    pluralName: 'products';
+    singularName: 'product';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    brief: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.RichText;
+    label: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product.product'
+    > &
+      Schema.Attribute.Private;
+    product_category: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::product-category.product-category'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'label'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiServiceSubscriptionServiceSubscription
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'service_subscriptions';
+  info: {
+    displayName: 'Service subscription';
+    pluralName: 'service-subscriptions';
+    singularName: 'service-subscription';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    credits: Schema.Attribute.Integer;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::service-subscription.service-subscription'
+    > &
+      Schema.Attribute.Private;
+    owner: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    product_service: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::product-service.product-service'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    subscriptionDate: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -820,9 +1118,12 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
+    account_keychains: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::account-keychain.account-keychain'
+    >;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -834,6 +1135,15 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    enterpriseName: Schema.Attribute.String;
+    firstName: Schema.Attribute.String;
+    is2FAEnabled: Schema.Attribute.Boolean;
+    job: Schema.Attribute.String;
+    lastName: Schema.Attribute.String;
+    licence_subscriptions: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::licence-subscription.licence-subscription'
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -845,6 +1155,7 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    phone: Schema.Attribute.String;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
@@ -852,6 +1163,11 @@ export interface PluginUsersPermissionsUser
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    service_subscriptions: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::service-subscription.service-subscription'
+    >;
+    slug: Schema.Attribute.UID<'firstName'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -874,6 +1190,14 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::account-keychain.account-keychain': ApiAccountKeychainAccountKeychain;
+      'api::licence-subscription.licence-subscription': ApiLicenceSubscriptionLicenceSubscription;
+      'api::product-category.product-category': ApiProductCategoryProductCategory;
+      'api::product-licence-validity.product-licence-validity': ApiProductLicenceValidityProductLicenceValidity;
+      'api::product-licence.product-licence': ApiProductLicenceProductLicence;
+      'api::product-service.product-service': ApiProductServiceProductService;
+      'api::product.product': ApiProductProduct;
+      'api::service-subscription.service-subscription': ApiServiceSubscriptionServiceSubscription;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

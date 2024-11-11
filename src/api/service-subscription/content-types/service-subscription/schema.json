@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "service_subscriptions",
+  "info": {
+    "singularName": "service-subscription",
+    "pluralName": "service-subscriptions",
+    "displayName": "Service subscription"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "subscriptionDate": {
+      "type": "datetime"
+    },
+    "credits": {
+      "type": "integer"
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "service_subscriptions"
+    },
+    "product_service": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product-service.product-service",
+      "inversedBy": "service_subscriptions"
+    }
+  }
+}

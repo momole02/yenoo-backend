@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_licences",
+  "info": {
+    "singularName": "product-licence",
+    "pluralName": "product-licences",
+    "displayName": "Product licence"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "price": {
+      "type": "decimal"
+    },
+    "isFree": {
+      "type": "boolean",
+      "default": false
+    },
+    "product_licence_validity": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product-licence-validity.product-licence-validity",
+      "inversedBy": "product_licences"
+    },
+    "licence_subscriptions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::licence-subscription.licence-subscription",
+      "mappedBy": "product_licence"
+    }
+  }
+}
