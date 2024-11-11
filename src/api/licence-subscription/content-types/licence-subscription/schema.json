@@ -4,7 +4,8 @@
   "info": {
     "singularName": "licence-subscription",
     "pluralName": "licence-subscriptions",
-    "displayName": "Licence subscription"
+    "displayName": "Licence subscription",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -19,6 +20,23 @@
     },
     "automaticRenewal": {
       "type": "boolean"
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "licence_subscriptions"
+    },
+    "parent_subscription": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::licence-subscription.licence-subscription"
+    },
+    "product_licence": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product-licence.product-licence",
+      "inversedBy": "licence_subscriptions"
     }
   }
 }

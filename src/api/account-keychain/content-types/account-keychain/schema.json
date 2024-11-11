@@ -17,6 +17,15 @@
     },
     "privateKey": {
       "type": "text"
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "account_keychains"
+    },
+    "uid": {
+      "type": "uid"
     }
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "products",
+  "collectionName": "product_services",
   "info": {
-    "singularName": "product",
-    "pluralName": "products",
-    "displayName": "Product",
+    "singularName": "product-service",
+    "pluralName": "product-services",
+    "displayName": "Product service",
     "description": ""
   },
   "options": {
@@ -15,8 +15,8 @@
     "label": {
       "type": "string"
     },
-    "brief": {
-      "type": "string"
+    "price": {
+      "type": "decimal"
     },
     "description": {
       "type": "richtext"
@@ -25,11 +25,11 @@
       "type": "uid",
       "targetField": "label"
     },
-    "product_category": {
+    "service_subscriptions": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::product-category.product-category",
-      "inversedBy": "products"
+      "relation": "oneToMany",
+      "target": "api::service-subscription.service-subscription",
+      "mappedBy": "product_service"
     }
   }
 }

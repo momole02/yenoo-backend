@@ -16,6 +16,18 @@
     },
     "credits": {
       "type": "integer"
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "service_subscriptions"
+    },
+    "product_service": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product-service.product-service",
+      "inversedBy": "service_subscriptions"
     }
   }
 }

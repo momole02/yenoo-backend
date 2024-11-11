@@ -82,6 +82,28 @@
     },
     "is2FAEnabled": {
       "type": "boolean"
+    },
+    "account_keychains": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::account-keychain.account-keychain",
+      "mappedBy": "owner"
+    },
+    "licence_subscriptions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::licence-subscription.licence-subscription",
+      "mappedBy": "owner"
+    },
+    "service_subscriptions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::service-subscription.service-subscription",
+      "mappedBy": "owner"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "firstName"
     }
   }
 }

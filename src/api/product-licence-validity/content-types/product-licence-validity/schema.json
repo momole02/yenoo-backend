@@ -4,7 +4,8 @@
   "info": {
     "singularName": "product-licence-validity",
     "pluralName": "product-licence-validities",
-    "displayName": "Product licence validity"
+    "displayName": "Product licence validity",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -22,6 +23,12 @@
     },
     "year": {
       "type": "integer"
+    },
+    "product_licences": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-licence.product-licence",
+      "mappedBy": "product_licence_validity"
     }
   }
 }
