@@ -31,7 +31,7 @@ export default {
     }
 
     const data = result.value
-    const user = strapi.documents("plugin::users-permissions.user").create({
+    const user = await strapi.documents("plugin::users-permissions.user").create({
       data: {
         username: data.email,
         email: data.email,
@@ -49,9 +49,26 @@ export default {
 
     logger.info(`created user: ${data.lastName} ${data.firstName}`)
 
+    const {
+      username,
+      phone,
+      email,
+      firstName,
+      lastName,
+      enterpriseName,
+      job,
+    } = user
     ctx.status = 201
     ctx.body = {
-      user,
+      user: {
+        username,
+        phone,
+        email,
+        firstName,
+        lastName,
+        enterpriseName,
+        job,
+      },
     }
 
   },
@@ -119,9 +136,26 @@ export default {
           twoFactorAuthCode,
         }
       })
+      const {
+        username,
+        email,
+        phone,
+        firstName,
+        lastName,
+        enterpriseName,
+        job
+      } = user
       ctx.status = 202 // Accepted
       ctx.body = {
-        user,
+        user: {
+          username,
+          email,
+          phone,
+          firstName,
+          lastName,
+          enterpriseName,
+          job,
+        }
       }
     }
   }
