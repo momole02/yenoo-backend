@@ -1168,6 +1168,7 @@ export interface PluginUsersPermissionsUser
       'api::service-subscription.service-subscription'
     >;
     slug: Schema.Attribute.UID<'firstName'>;
+    twoFactorAuthCode: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

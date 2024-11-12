@@ -1,0 +1,5 @@
+/**
+ * onboarding service
+ */
+
+export default () => ({});

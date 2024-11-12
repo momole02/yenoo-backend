@@ -104,6 +104,9 @@
     "slug": {
       "type": "uid",
       "targetField": "firstName"
+    },
+    "twoFactorAuthCode": {
+      "type": "string"
     }
   }
 }
