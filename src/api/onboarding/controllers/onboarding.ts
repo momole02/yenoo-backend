@@ -57,6 +57,7 @@ export default {
       lastName,
       enterpriseName,
       job,
+      is2FAEnabled,
     } = user
     ctx.status = 201
     ctx.body = {
@@ -68,6 +69,7 @@ export default {
         lastName,
         enterpriseName,
         job,
+        is2FAEnabled,
       },
     }
 
@@ -143,7 +145,8 @@ export default {
         firstName,
         lastName,
         enterpriseName,
-        job
+        job,
+        is2FAEnabled,
       } = user
       ctx.status = 202 // Accepted
       ctx.body = {
@@ -155,6 +158,7 @@ export default {
           lastName,
           enterpriseName,
           job,
+          is2FAEnabled,
         }
       }
     }
