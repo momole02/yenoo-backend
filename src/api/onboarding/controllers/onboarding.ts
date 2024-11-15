@@ -16,6 +16,7 @@ export default {
       firstName: Joi.string().required(),
       lastName: Joi.string().required(),
       enterpriseName: Joi.string(),
+      phone: Joi.string(),
       job: Joi.string(),
       email: Joi.string().email().required(),
       password: Joi.string().required(),
@@ -30,12 +31,26 @@ export default {
       return;
     }
 
+    const authRoleRes = await strapi.documents("plugin::users-permissions.role").findMany({
+      filters: {
+        name: {
+          $eqi: "authenticated"
+        }
+      }
+    })
+
+    if (!authRoleRes.length) {
+      logger.error("signup(): authenticated role not found. stop !")
+      ctx.throw(500, "Internal server error")
+    }
+    const authenticated = authRoleRes[0]
+
     const data = result.value
     const user = await strapi.documents("plugin::users-permissions.user").create({
       data: {
         username: data.email,
         email: data.email,
-        role: "authenticated",
+        role: authenticated.id,
         firstName: data.firstName,
         lastName: data.lastName,
         enterpriseName: data.enterpriseName,
