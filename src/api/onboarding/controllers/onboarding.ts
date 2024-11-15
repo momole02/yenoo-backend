@@ -43,9 +43,15 @@ export default {
       logger.error("signup(): authenticated role not found. stop !")
       ctx.throw(500, "Internal server error")
     }
+
     const authenticated = authRoleRes[0]
 
     const data = result.value
+    const passwordHash = await bcrypt.hash(data.password, 10)
+    console.log({
+      password: data.password,
+      passwordHash,
+    })
     const user = await strapi.documents("plugin::users-permissions.user").create({
       data: {
         username: data.email,
@@ -56,7 +62,9 @@ export default {
         enterpriseName: data.enterpriseName,
         job: data.job,
         is2FAEnabled: true,
-        password: await bcrypt.hash(data.password, 10),
+        // password: passwordHash,
+        pwd: passwordHash,
+        phone: data.phone,
         confirmed: true,
         blocked: false,
       }
@@ -123,13 +131,19 @@ export default {
     }
 
     const user = searchResult[0]
-    if (!await bcrypt.compare(data.password, user.password)) {
+    const res = await bcrypt.compare(data.password, user.pwd)
+    console.log({ res })
+    if (!res) {
       logger.error(`auth(): invalid password for ${user.firstName} ${user.lastName}`, {
-        data
+        data,
+        dbgSubmittedPassword: data.password,
+        dbgPasswordHash: user.password,
       })
       ctx.throw(401, "Invalid credentials")
       return
     }
+    console.log({
+    })
     if (!user.is2FAEnabled) {
       logger.warn(`2FA auth disabled for user ${user.firstName} ${user.lastName} `)
       const jwt = strapi.plugins["users-permissions"]
@@ -143,7 +157,7 @@ export default {
         jwt, user
       }
     } else {
-      const twoFactorAuthCode = `${Math.random() * 90000 + 10000}`;
+      const twoFactorAuthCode = `${Math.ceil(Math.random() * 90000 + 10000)}`;
       logger.info(`going for 2FA auth for ${user.firstName} ${user.lastName}`, {
         twoFactorAuthCode
       })
@@ -176,6 +190,53 @@ export default {
           is2FAEnabled,
         }
       }
+    }
+  },
+
+  twoFactorAuth: async (ctx, next) => {
+    const schema = Joi.object({
+      identifier: Joi.string().required(),
+      otp: Joi.string().required(),
+    })
+
+    const result = schema.validate(ctx.request.body)
+    if (result.error) {
+      logger.error("twoFactorAuth(): validation error", {
+        error: result.error,
+      })
+      ctx.throw(400, result.error.name, result.error.message)
+      return
+    }
+    const body = result.value
+
+    const searchResult = await strapi.documents("plugin::users-permissions.user").
+      findMany({
+        filters: {
+          $or: [
+            { email: body.identifier },
+            { phone: body.identifier },
+          ],
+          twoFactorAuthCode: body.otp,
+        }
+      })
+
+    if (!searchResult.length) {
+      logger.error("twoFactorAuth(): 2fa auth failed", {
+        body,
+      })
+      ctx.throw(403, "2FA Auth failed")
+    }
+
+    const user = searchResult[0]
+    const jwt = strapi.plugins["users-permissions"]
+      .services
+      .jwt
+      .issue({
+        id: user.id
+      })
+    ctx.status = 200 // OK
+    ctx.body = {
+      jwt, user
     }
   }
   // exampleAction: async (ctx, next) => {

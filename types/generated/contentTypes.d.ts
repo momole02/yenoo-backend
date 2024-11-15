@@ -1158,6 +1158,7 @@ export interface PluginUsersPermissionsUser
     phone: Schema.Attribute.String;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    pwd: Schema.Attribute.String;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
     role: Schema.Attribute.Relation<
       'manyToOne',
