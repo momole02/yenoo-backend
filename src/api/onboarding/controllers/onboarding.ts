@@ -150,7 +150,7 @@ export default {
         .services
         .jwt
         .issue({
-          id: user.id
+          id: user.documentId,
         })
       ctx.status = 200 // OK
       ctx.body = {
@@ -232,7 +232,7 @@ export default {
       .services
       .jwt
       .issue({
-        id: user.id
+        id: user.documentId,
       })
     ctx.status = 200 // OK
     ctx.body = {
