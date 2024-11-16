@@ -107,6 +107,9 @@
     },
     "twoFactorAuthCode": {
       "type": "string"
+    },
+    "pwd": {
+      "type": "string"
     }
   }
 }

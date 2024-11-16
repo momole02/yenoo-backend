@@ -22,6 +22,16 @@ export default {
       },
     },
 
+    {
+      method: 'POST',
+      path: '/two-factor-auth',
+      handler: 'onboarding.twoFactorAuth',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+
     // {
     //  method: 'GET',
     //  path: '/onboarding',
