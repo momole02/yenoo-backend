@@ -369,6 +369,35 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAboutDetailAboutDetail extends Struct.SingleTypeSchema {
+  collectionName: 'about_details';
+  info: {
+    displayName: 'About details';
+    pluralName: 'about-details';
+    singularName: 'about-detail';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    contacts: Schema.Attribute.RichText;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    details: Schema.Attribute.RichText;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::about-detail.about-detail'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiAccountKeychainAccountKeychain
   extends Struct.CollectionTypeSchema {
   collectionName: 'account_keychains';
@@ -1193,6 +1222,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::about-detail.about-detail': ApiAboutDetailAboutDetail;
       'api::account-keychain.account-keychain': ApiAccountKeychainAccountKeychain;
       'api::licence-subscription.licence-subscription': ApiLicenceSubscriptionLicenceSubscription;
       'api::product-category.product-category': ApiProductCategoryProductCategory;
