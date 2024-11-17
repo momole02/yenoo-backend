@@ -617,6 +617,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'api::product.product'
     > &
       Schema.Attribute.Private;
+    logo: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     product_category: Schema.Attribute.Relation<
       'manyToOne',
       'api::product-category.product-category'

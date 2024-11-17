@@ -30,6 +30,16 @@
       "relation": "manyToOne",
       "target": "api::product-category.product-category",
       "inversedBy": "products"
+    },
+    "logo": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }
