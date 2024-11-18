@@ -1,0 +1,21 @@
+{
+  "kind": "singleType",
+  "collectionName": "about_details",
+  "info": {
+    "singularName": "about-detail",
+    "pluralName": "about-details",
+    "displayName": "About details"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "details": {
+      "type": "richtext"
+    },
+    "contacts": {
+      "type": "richtext"
+    }
+  }
+}
