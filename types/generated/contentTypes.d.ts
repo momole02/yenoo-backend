@@ -434,6 +434,35 @@ export interface ApiAccountKeychainAccountKeychain
   };
 }
 
+export interface ApiBlogPostBlogPost extends Struct.CollectionTypeSchema {
+  collectionName: 'blog_posts';
+  info: {
+    displayName: 'Blog post';
+    pluralName: 'blog-posts';
+    singularName: 'blog-post';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    content: Schema.Attribute.RichText;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::blog-post.blog-post'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiLicenceSubscriptionLicenceSubscription
   extends Struct.CollectionTypeSchema {
   collectionName: 'licence_subscriptions';
@@ -1224,6 +1253,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::about-detail.about-detail': ApiAboutDetailAboutDetail;
       'api::account-keychain.account-keychain': ApiAccountKeychainAccountKeychain;
+      'api::blog-post.blog-post': ApiBlogPostBlogPost;
       'api::licence-subscription.licence-subscription': ApiLicenceSubscriptionLicenceSubscription;
       'api::product-category.product-category': ApiProductCategoryProductCategory;
       'api::product-licence-validity.product-licence-validity': ApiProductLicenceValidityProductLicenceValidity;
