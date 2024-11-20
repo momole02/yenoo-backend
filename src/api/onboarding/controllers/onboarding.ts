@@ -161,8 +161,6 @@ export default {
       ctx.throw(401, "Invalid credentials")
       return
     }
-    console.log({
-    })
     if (!user.is2FAEnabled) {
       logger.warn(`2FA auth disabled for user ${user.firstName} ${user.lastName} `)
       const jwt = strapi.service(
@@ -304,6 +302,42 @@ export default {
         enterpriseName: user.enterpriseName,
       }
     }
+  },
+  changePassword: async (ctx, next) => {
+    if (ctx.user) {
+      logger.warn("getAccountDetails(): user not found in context")
+      ctx.throw(500, "Internal Server Error")
+      return;
+    }
+    const user = ctx.user
+    const schema = Joi.object({
+      oldPassword: Joi.string().required(),
+      newPassword: Joi.string().required(),
+      confirmPassword: Joi.string().required(),
+    })
+    const result = schema.validate(ctx.request.body)
+    const data = result.value
+    if (!await bcrypt.compare(data.oldPassword, user.pwd)) {
+      logger.error("updatePassword(): failed to compare old & new passwords", {
+        password: data.oldPassword,
+        hash: user.pwd,
+      })
+      ctx.throw(400, "Bad Request", { message: "Incorrect old password" })
+      return;
+    }
+
+    if (data.newPassword != data.confirmPassword) {
+      ctx.throw(400, "Bad Request", { message: "Password doesn't match confirmation" })
+      return;
+    }
+
+    await strapi.documents("plugin::users-permissions.user").update({
+      documentId: user.documentId,
+      data: {
+        password: data.newPassword,
+      }
+    })
+    ctx.status = 200
   }
   // exampleAction: async (ctx, next) => {
   //   try {

@@ -42,6 +42,28 @@ export default {
       },
     },
 
+
+    {
+      method: 'POST',
+      path: '/account-details',
+      handler: 'onboarding.getAccountDetails',
+      config: {
+        policies: [],
+        middlewares: ["api::onboarding.auth"],
+      },
+    },
+
+
+    {
+      method: 'POST',
+      path: '/change-password',
+      handler: 'onboarding.changePassword',
+      config: {
+        policies: [],
+        middlewares: ["api::onboarding.auth"],
+      },
+    },
+
     // {
     //  method: 'GET',
     //  path: '/onboarding',
