@@ -31,6 +31,27 @@ export default {
       return;
     }
 
+    const data = result.value
+
+    const isUnique = await strapi.service(
+      "api::onboarding.onboarding"
+    ).isEmailPhoneUnique(
+      {
+        email: data.email,
+        phone: data.phone
+      }
+    )
+    if (isUnique) {
+      logger.error("signup(): unallowed existing email or phone ", {
+        email: data.email,
+        phone: data.phone,
+      })
+      ctx.throw(400, "Bad Request", {
+        message: "Your email (or phone) is already used."
+      })
+      return;
+    }
+
     const authRoleRes = await strapi.documents("plugin::users-permissions.role").findMany({
       filters: {
         name: {
@@ -46,7 +67,6 @@ export default {
 
     const authenticated = authRoleRes[0]
 
-    const data = result.value
     const passwordHash = await bcrypt.hash(data.password, 10)
     console.log({
       password: data.password,
