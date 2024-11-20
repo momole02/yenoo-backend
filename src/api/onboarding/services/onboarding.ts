@@ -11,7 +11,7 @@ interface IsEmailPhoneUniqueArgs {
     phone: string;
 }
 
-interface JwtTokenData {
+export interface JwtTokenData {
     documentId: string;
 }
 
