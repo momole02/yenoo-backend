@@ -32,6 +32,16 @@ export default {
       },
     },
 
+    {
+      method: 'POST',
+      path: '/update-account',
+      handler: 'onboarding.updateAccount',
+      config: {
+        policies: [],
+        middlewares: ["api::onboarding.auth"],
+      },
+    },
+
     // {
     //  method: 'GET',
     //  path: '/onboarding',

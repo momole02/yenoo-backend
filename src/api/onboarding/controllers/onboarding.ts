@@ -256,6 +256,37 @@ export default {
     ctx.body = {
       jwt, user
     }
+  },
+  updateAccount: async (ctx, next) => {
+    if (!ctx.user) {
+      logger.warn("updateAccount(): user not found in context")
+      ctx.throw(500, "Internal Server Error")
+      return;
+    }
+    const schema = Joi.object({
+      firstName: Joi.string().required(),
+      lastName: Joi.string().required(),
+      job: Joi.string(),
+      enterpriseName: Joi.string(),
+      is2FAEnabled: Joi.boolean(),
+    })
+    const user = ctx.user
+    const result = schema.validate(ctx.request.body)
+    if (result.error) {
+      ctx.throw(400, "Validation Error", { message: result.error.message })
+      return;
+    }
+    const data = result.value
+    await strapi.documents("plugin::users-permissions.user").update({
+      documentId: user.documentId,
+      data: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        job: data.job,
+        enterpriseName: data.enterpriseName,
+      }
+    })
+    ctx.status = 200
   }
   // exampleAction: async (ctx, next) => {
   //   try {
