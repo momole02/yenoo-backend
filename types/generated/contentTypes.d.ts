@@ -688,6 +688,71 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiSecureLinkAccessSecureLinkAccess
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'secure_link_accesses';
+  info: {
+    description: '';
+    displayName: 'Secure link access';
+    pluralName: 'secure-link-accesses';
+    singularName: 'secure-link-access';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::secure-link-access.secure-link-access'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    secureLinkDocumentId: Schema.Attribute.String;
+    secureLinkLabel: Schema.Attribute.String;
+    secureLinkUrl: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    userDocumentId: Schema.Attribute.String;
+    userEmail: Schema.Attribute.String;
+    userFullName: Schema.Attribute.String;
+    userPhone: Schema.Attribute.String;
+  };
+}
+
+export interface ApiSecureLinkSecureLink extends Struct.CollectionTypeSchema {
+  collectionName: 'secure_links';
+  info: {
+    displayName: 'Secure link';
+    pluralName: 'secure-links';
+    singularName: 'secure-link';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    label: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::secure-link.secure-link'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    urlPattern: Schema.Attribute.String;
+  };
+}
+
 export interface ApiServiceSubscriptionServiceSubscription
   extends Struct.CollectionTypeSchema {
   collectionName: 'service_subscriptions';
@@ -1260,6 +1325,8 @@ declare module '@strapi/strapi' {
       'api::product-licence.product-licence': ApiProductLicenceProductLicence;
       'api::product-service.product-service': ApiProductServiceProductService;
       'api::product.product': ApiProductProduct;
+      'api::secure-link-access.secure-link-access': ApiSecureLinkAccessSecureLinkAccess;
+      'api::secure-link.secure-link': ApiSecureLinkSecureLink;
       'api::service-subscription.service-subscription': ApiServiceSubscriptionServiceSubscription;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

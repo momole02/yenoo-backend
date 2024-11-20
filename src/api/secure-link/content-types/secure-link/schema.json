@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "secure_links",
+  "info": {
+    "singularName": "secure-link",
+    "pluralName": "secure-links",
+    "displayName": "Secure link"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "urlPattern": {
+      "type": "string"
+    }
+  }
+}
