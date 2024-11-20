@@ -32,7 +32,6 @@ export default {
     }
 
     const data = result.value
-
     const isUnique = await strapi.service(
       "api::onboarding.onboarding"
     ).isEmailPhoneUnique(
@@ -166,12 +165,11 @@ export default {
     })
     if (!user.is2FAEnabled) {
       logger.warn(`2FA auth disabled for user ${user.firstName} ${user.lastName} `)
-      const jwt = strapi.plugins["users-permissions"]
-        .services
-        .jwt
-        .issue({
-          id: user.documentId,
-        })
+      const jwt = strapi.service(
+        "api::onboarding.onboarding"
+      ).issueJwtToken({
+        documentId: user.documentId,
+      })
       ctx.status = 200 // OK
       ctx.body = {
         jwt, user
@@ -248,12 +246,12 @@ export default {
     }
 
     const user = searchResult[0]
-    const jwt = strapi.plugins["users-permissions"]
-      .services
-      .jwt
-      .issue({
-        id: user.documentId,
-      })
+    const jwt = strapi.service(
+      "api::onboarding.onboarding"
+    ).issueJwtToken({
+      documentId: user.documentId,
+    })
+
     ctx.status = 200 // OK
     ctx.body = {
       jwt, user

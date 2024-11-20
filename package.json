@@ -17,6 +17,7 @@
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
     "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
     "logging": "^3.3.0",
     "pg": "8.8.0",
     "react": "^18.0.0",
