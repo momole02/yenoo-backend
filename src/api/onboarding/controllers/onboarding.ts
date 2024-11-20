@@ -287,6 +287,23 @@ export default {
       }
     })
     ctx.status = 200
+  },
+  getAccountDetails: async (ctx, next) => {
+    if (ctx.user) {
+      logger.warn("getAccountDetails(): user not found in context")
+      ctx.throw(500, "Internal Server Error")
+      return;
+    }
+    const user = ctx.user
+    ctx.status = 200
+    ctx.body = {
+      details: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        job: user.job,
+        enterpriseName: user.enterpriseName,
+      }
+    }
   }
   // exampleAction: async (ctx, next) => {
   //   try {
