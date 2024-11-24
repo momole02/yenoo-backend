@@ -287,7 +287,7 @@ export default {
     ctx.status = 200
   },
   getAccountDetails: async (ctx, next) => {
-    if (ctx.user) {
+    if (!ctx.user) {
       logger.warn("getAccountDetails(): user not found in context")
       ctx.throw(500, "Internal Server Error")
       return;
@@ -295,16 +295,17 @@ export default {
     const user = ctx.user
     ctx.status = 200
     ctx.body = {
-      details: {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        job: user.job,
-        enterpriseName: user.enterpriseName,
-      }
+      firstName: user.firstName,
+      lastName: user.lastName,
+      job: user.job,
+      enterpriseName: user.enterpriseName,
+      is2FAEnabled: user.is2FAEnabled,
+      email: user.email,
+      phone: user.phone,
     }
   },
   changePassword: async (ctx, next) => {
-    if (ctx.user) {
+    if (!ctx.user) {
       logger.warn("getAccountDetails(): user not found in context")
       ctx.throw(500, "Internal Server Error")
       return;

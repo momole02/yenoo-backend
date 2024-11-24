@@ -15,7 +15,7 @@ export interface JwtTokenData {
     documentId: string;
 }
 
-export default ({ env }) => ({
+export default () => ({
     async isEmailPhoneUnique({
         email,
         phone
@@ -40,19 +40,27 @@ export default ({ env }) => ({
 
     issueJwtToken(data: JwtTokenData) {
         const encoded = JSON.stringify(data)
-        const jwtString = jwt.sign(encoded, env("JWT_SECRET"))
+        // const jwtString = jwt.sign(
+        //     encoded,
+        //     strapi.config.get("plugin::users-permissions.jwtSecret")
+        // )
+        const jwtString = strapi.plugins["users-permissions"]
+            .services
+            .jwt
+            .issue(data)
+
         return jwtString
     },
 
     checkJwtToken(token: string): JwtTokenData {
         try {
-            const encoded = jwt.verify(
+            const data = jwt.verify(
                 token,
-                env("JWT_SECRET")
-            ) as string
+                strapi.config.get("plugin::users-permissions.jwtSecret"),
+            )
 
-            const decoded = JSON.parse(encoded)
-            return decoded as JwtTokenData
+            //const decoded = JSON.parsedata=
+            return data as JwtTokenData
 
         } catch (error) {
             logger.error(

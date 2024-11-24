@@ -44,7 +44,7 @@ export default {
 
 
     {
-      method: 'POST',
+      method: 'GET',
       path: '/account-details',
       handler: 'onboarding.getAccountDetails',
       config: {
