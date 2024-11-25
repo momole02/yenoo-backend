@@ -1,5 +1,5 @@
 import logging from "logging"
-import { JwtTokenData } from "../services/onboarding"
+import { JwtTokenData } from "../types"
 
 const logger = logging("onboarding / middlewares / auth")
 

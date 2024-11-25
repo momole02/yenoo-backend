@@ -1,20 +1,13 @@
 import jwt from "jsonwebtoken"
 import logging from "logging";
+import mj from "node-mailjet";
+import { IsEmailPhoneUniqueArgs, JwtTokenData, SendOTPEmailArgs } from "../types";
 
-const logger = logging("Onboarding Service")
+
+const logger = logging("onboarding / services")
 /**
  * onboarding service
  */
-
-interface IsEmailPhoneUniqueArgs {
-    email: string;
-    phone: string;
-}
-
-export interface JwtTokenData {
-    documentId: string;
-    id: string;
-}
 
 export default () => ({
     async isEmailPhoneUnique({
@@ -90,5 +83,61 @@ export default () => ({
         } catch (error) {
             return null
         }
+    },
+
+    async sendOTPEmail({
+        userDocumentId,
+    }: SendOTPEmailArgs) {
+
+        try {
+            const user = await strapi
+                .documents("plugin::users-permissions.user")
+                .findOne(
+                    { documentId: userDocumentId }
+                )
+            if (!user) {
+                logger.warn(`sendOTPEmail(): User with documentId=${userDocumentId} not fould`)
+            }
+
+            const mailjet = mj.apiConnect(
+                strapi.config.get("api.mailjet.apiKey"),
+                strapi.config.get("api.mailjet.secret")
+            )
+            await mailjet.post(
+                "send", { version: "v3.1" }
+            ).request({
+                "Messages": [
+                    {
+                        "From": {
+                            "Email": strapi.config.get("api.mailjet.sender.email"),
+                            "Name": strapi.config.get("api.mailjet.sender.name")
+                        },
+                        "To": [
+                            {
+                                "Email": user.email,
+                                "Name": `${user.firstName} ${user.lastName}`
+                            }
+                        ],
+                        "TemplateID": 6503797,
+                        "TemplateLanguage": true,
+                        "Subject": "Your One Time Password",
+                        "Variables": {
+                            "otp": user.twoFactorAuthCode,
+                            "Recipient_Name": `${user.firstName} ${user.lastName}`,
+                        }
+
+                    }
+                ]
+            })
+            logger.info(`OTP [${user.twoFactorAuthCode}] Sent to [${user.email}] `)
+            return true
+        } catch (error) {
+            logger.error(
+                "sendOTPEmail(): An error occured while sending OTP email",
+                error)
+            return false
+        }
     }
+
+
 });
