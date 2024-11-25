@@ -31,6 +31,26 @@ export default {
       return;
     }
 
+    const data = result.value
+    const isUnique = await strapi.service(
+      "api::onboarding.onboarding"
+    ).isEmailPhoneUnique(
+      {
+        email: data.email,
+        phone: data.phone
+      }
+    )
+    if (isUnique) {
+      logger.error("signup(): unallowed existing email or phone ", {
+        email: data.email,
+        phone: data.phone,
+      })
+      ctx.throw(400, "Bad Request", {
+        message: "Your email (or phone) is already used."
+      })
+      return;
+    }
+
     const authRoleRes = await strapi.documents("plugin::users-permissions.role").findMany({
       filters: {
         name: {
@@ -46,7 +66,6 @@ export default {
 
     const authenticated = authRoleRes[0]
 
-    const data = result.value
     const passwordHash = await bcrypt.hash(data.password, 10)
     console.log({
       password: data.password,
@@ -142,16 +161,14 @@ export default {
       ctx.throw(401, "Invalid credentials")
       return
     }
-    console.log({
-    })
     if (!user.is2FAEnabled) {
       logger.warn(`2FA auth disabled for user ${user.firstName} ${user.lastName} `)
-      const jwt = strapi.plugins["users-permissions"]
-        .services
-        .jwt
-        .issue({
-          id: user.documentId,
-        })
+      const jwt = strapi.service(
+        "api::onboarding.onboarding"
+      ).issueJwtToken({
+        id: user.id,
+        documentId: user.documentId,
+      })
       ctx.status = 200 // OK
       ctx.body = {
         jwt, user
@@ -228,16 +245,109 @@ export default {
     }
 
     const user = searchResult[0]
-    const jwt = strapi.plugins["users-permissions"]
-      .services
-      .jwt
-      .issue({
-        id: user.documentId,
-      })
+    const jwt = strapi.service(
+      "api::onboarding.onboarding"
+    ).issueJwtToken({
+      id: user.id,
+      documentId: user.documentId,
+    })
+
     ctx.status = 200 // OK
     ctx.body = {
       jwt, user
     }
+  },
+  updateAccountDetails: async (ctx, next) => {
+    if (!ctx.user) {
+      logger.warn("updateAccount(): user not found in context")
+      ctx.throw(500, "Internal Server Error")
+      return;
+    }
+
+    const schema = Joi.object({
+      firstName: Joi.string().required(),
+      lastName: Joi.string().required(),
+      job: Joi.string().allow(null).allow(""),
+      enterpriseName: Joi.string().allow(null).allow(""),
+      is2FAEnabled: Joi.boolean(),
+    })
+    const user = ctx.user
+    const result = schema.validate(ctx.request.body)
+    if (result.error) {
+      logger.error("updateAccount(): failed to validate schema", { error: result.error })
+      ctx.status = 400
+      ctx.body = { message: result.error.message }
+      return
+    }
+
+    const data = result.value
+    await strapi.service("api::onboarding.onboarding").updateAccount(
+      user.documentId,
+      {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        enterpriseName: data.enterpriseName,
+        job: data.job,
+        is2FAEnabled: data.is2FAEnabled,
+      }
+    )
+
+
+    ctx.status = 200
+  },
+  getAccountDetails: async (ctx, next) => {
+    if (!ctx.user) {
+      logger.warn("getAccountDetails(): user not found in context")
+      ctx.throw(500, "Internal Server Error")
+      return;
+    }
+    const user = ctx.user
+    ctx.status = 200
+    ctx.body = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      job: user.job,
+      enterpriseName: user.enterpriseName,
+      is2FAEnabled: user.is2FAEnabled,
+      email: user.email,
+      phone: user.phone,
+    }
+  },
+  changePassword: async (ctx, next) => {
+    if (!ctx.user) {
+      logger.warn("getAccountDetails(): user not found in context")
+      ctx.throw(500, "Internal Server Error")
+      return;
+    }
+    const user = ctx.user
+    const schema = Joi.object({
+      oldPassword: Joi.string().required(),
+      newPassword: Joi.string().required(),
+      confirmPassword: Joi.string().required(),
+    })
+    const result = schema.validate(ctx.request.body)
+    const data = result.value
+    if (!await bcrypt.compare(data.oldPassword, user.pwd)) {
+      logger.error("updatePassword(): failed to compare old & new passwords", {
+        password: data.oldPassword,
+        hash: user.pwd,
+      })
+      ctx.throw(400, "Bad Request", { message: "Incorrect old password" })
+      return;
+    }
+
+    if (data.newPassword != data.confirmPassword) {
+      ctx.throw(400, "Bad Request", { message: "Password doesn't match confirmation" })
+      return;
+    }
+
+    await strapi.documents("plugin::users-permissions.user").update({
+      documentId: user.documentId,
+      data: {
+        password: data.newPassword,
+      }
+    })
+    ctx.status = 200
   }
   // exampleAction: async (ctx, next) => {
   //   try {
