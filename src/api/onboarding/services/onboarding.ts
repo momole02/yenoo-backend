@@ -13,6 +13,7 @@ interface IsEmailPhoneUniqueArgs {
 
 export interface JwtTokenData {
     documentId: string;
+    id: string;
 }
 
 export default () => ({
@@ -76,6 +77,18 @@ export default () => ({
             "plugin::users-permissions.user"
         ).findOne({ documentId: data.documentId })
         return result
-    }
+    },
 
+    async updateAccount(userDocumentId: string, data: any) {
+        try {
+            const result = await strapi.documents("plugin::users-permissions.user").update({
+                documentId: userDocumentId,
+                data,
+            })
+            console.log({ result })
+            return result
+        } catch (error) {
+            return null
+        }
+    }
 });

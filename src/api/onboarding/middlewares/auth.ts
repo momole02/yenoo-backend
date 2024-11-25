@@ -27,6 +27,6 @@ export default (config,) => {
         } else {
             logger.warn("unreconized authorization format", { authorization })
         }
-        next()
+        await next()
     }
 }

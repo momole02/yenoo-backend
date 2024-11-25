@@ -166,6 +166,7 @@ export default {
       const jwt = strapi.service(
         "api::onboarding.onboarding"
       ).issueJwtToken({
+        id: user.id,
         documentId: user.documentId,
       })
       ctx.status = 200 // OK
@@ -247,6 +248,7 @@ export default {
     const jwt = strapi.service(
       "api::onboarding.onboarding"
     ).issueJwtToken({
+      id: user.id,
       documentId: user.documentId,
     })
 
@@ -255,35 +257,42 @@ export default {
       jwt, user
     }
   },
-  updateAccount: async (ctx, next) => {
+  updateAccountDetails: async (ctx, next) => {
     if (!ctx.user) {
       logger.warn("updateAccount(): user not found in context")
       ctx.throw(500, "Internal Server Error")
       return;
     }
+
     const schema = Joi.object({
       firstName: Joi.string().required(),
       lastName: Joi.string().required(),
-      job: Joi.string(),
-      enterpriseName: Joi.string(),
+      job: Joi.string().allow(null).allow(""),
+      enterpriseName: Joi.string().allow(null).allow(""),
       is2FAEnabled: Joi.boolean(),
     })
     const user = ctx.user
     const result = schema.validate(ctx.request.body)
     if (result.error) {
-      ctx.throw(400, "Validation Error", { message: result.error.message })
-      return;
+      logger.error("updateAccount(): failed to validate schema", { error: result.error })
+      ctx.status = 400
+      ctx.body = { message: result.error.message }
+      return
     }
+
     const data = result.value
-    await strapi.documents("plugin::users-permissions.user").update({
-      documentId: user.documentId,
-      data: {
+    await strapi.service("api::onboarding.onboarding").updateAccount(
+      user.documentId,
+      {
         firstName: data.firstName,
         lastName: data.lastName,
-        job: data.job,
         enterpriseName: data.enterpriseName,
+        job: data.job,
+        is2FAEnabled: data.is2FAEnabled,
       }
-    })
+    )
+
+
     ctx.status = 200
   },
   getAccountDetails: async (ctx, next) => {

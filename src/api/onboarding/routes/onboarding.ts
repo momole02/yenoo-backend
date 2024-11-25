@@ -11,7 +11,6 @@ export default {
       },
     },
 
-
     {
       method: 'POST',
       path: '/signup',
@@ -34,8 +33,8 @@ export default {
 
     {
       method: 'POST',
-      path: '/update-account',
-      handler: 'onboarding.updateAccount',
+      path: '/account-details',
+      handler: 'onboarding.updateAccountDetails',
       config: {
         policies: [],
         middlewares: ["api::onboarding.auth"],
@@ -65,13 +64,13 @@ export default {
     },
 
     // {
-    //  method: 'GET',
-    //  path: '/onboarding',
-    //  handler: 'onboarding.exampleAction',
-    //  config: {
-    //    policies: [],
-    //    middlewares: [],
-    //  },
+    //   method: 'GET',
+    //   path: '/onboarding',
+    //   handler: 'onboarding.exampleAction',
+    //   config: {
+    //     policies: [],
+    //     middlewares: [],
+    //   },
     // },
   ],
 };
