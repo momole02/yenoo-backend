@@ -6,7 +6,7 @@ import Joi from "joi";
 import bcrypt from "bcrypt"
 import logging from "logging"
 
-const logger = logging("Onboarding API")
+const logger = logging("onboarding / controllers")
 
 export default {
 
@@ -175,15 +175,15 @@ export default {
       }
     } else {
       const twoFactorAuthCode = `${Math.ceil(Math.random() * 90000 + 10000)}`;
-      logger.info(`going for 2FA auth for ${user.firstName} ${user.lastName}`, {
-        twoFactorAuthCode
-      })
-      strapi.documents("plugin::users-permissions.user").update({
+      await strapi.documents("plugin::users-permissions.user").update({
         documentId: user.documentId,
         data: {
           twoFactorAuthCode,
         }
       })
+      await strapi.service("api::onboarding.onboarding").sendOTPEmail(
+        { userDocumentId: user.documentId },
+      )
       const {
         username,
         email,

@@ -1,4 +1,5 @@
-import { JwtTokenData } from "../api/onboarding/services/onboarding"
+import { JwtTokenData } from "../api/onboarding/types"
+
 
 const isSecureLink = async (url: string) => {
 
