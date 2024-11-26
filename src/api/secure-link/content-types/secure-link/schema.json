@@ -11,11 +11,21 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "label": {
+    "name": {
       "type": "string"
     },
-    "urlPattern": {
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "url": {
       "type": "string"
+    },
+    "secure_link_accesses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::secure-link-access.secure-link-access",
+      "mappedBy": "secure_link"
     }
   }
 }

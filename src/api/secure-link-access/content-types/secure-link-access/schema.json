@@ -4,34 +4,24 @@
   "info": {
     "singularName": "secure-link-access",
     "pluralName": "secure-link-accesses",
-    "displayName": "Secure link access",
-    "description": ""
+    "displayName": "Secure link access"
   },
   "options": {
     "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
-    "userDocumentId": {
-      "type": "string"
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "secure_link_accesses"
     },
-    "secureLinkDocumentId": {
-      "type": "string"
-    },
-    "userEmail": {
-      "type": "string"
-    },
-    "secureLinkLabel": {
-      "type": "string"
-    },
-    "secureLinkUrl": {
-      "type": "string"
-    },
-    "userFullName": {
-      "type": "string"
-    },
-    "userPhone": {
-      "type": "string"
+    "secure_link": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::secure-link.secure-link",
+      "inversedBy": "secure_link_accesses"
     }
   }
 }
