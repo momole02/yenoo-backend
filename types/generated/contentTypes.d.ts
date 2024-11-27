@@ -727,6 +727,7 @@ export interface ApiSecureLinkAccessSecureLinkAccess
 export interface ApiSecureLinkSecureLink extends Struct.CollectionTypeSchema {
   collectionName: 'secure_links';
   info: {
+    description: '';
     displayName: 'Secure link';
     pluralName: 'secure-links';
     singularName: 'secure-link';
@@ -744,6 +745,7 @@ export interface ApiSecureLinkSecureLink extends Struct.CollectionTypeSchema {
       'api::secure-link.secure-link'
     > &
       Schema.Attribute.Private;
+    mimeType: Schema.Attribute.String;
     name: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     secure_link_accesses: Schema.Attribute.Relation<
@@ -751,6 +753,7 @@ export interface ApiSecureLinkSecureLink extends Struct.CollectionTypeSchema {
       'api::secure-link-access.secure-link-access'
     >;
     slug: Schema.Attribute.UID<'name'>;
+    stream: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

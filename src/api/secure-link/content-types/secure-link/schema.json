@@ -4,7 +4,8 @@
   "info": {
     "singularName": "secure-link",
     "pluralName": "secure-links",
-    "displayName": "Secure link"
+    "displayName": "Secure link",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -26,6 +27,13 @@
       "relation": "oneToMany",
       "target": "api::secure-link-access.secure-link-access",
       "mappedBy": "secure_link"
+    },
+    "mimeType": {
+      "type": "string"
+    },
+    "stream": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
