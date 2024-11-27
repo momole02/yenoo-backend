@@ -692,7 +692,6 @@ export interface ApiSecureLinkAccessSecureLinkAccess
   extends Struct.CollectionTypeSchema {
   collectionName: 'secure_link_accesses';
   info: {
-    description: '';
     displayName: 'Secure link access';
     pluralName: 'secure-link-accesses';
     singularName: 'secure-link-access';
@@ -711,22 +710,24 @@ export interface ApiSecureLinkAccessSecureLinkAccess
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    secureLinkDocumentId: Schema.Attribute.String;
-    secureLinkLabel: Schema.Attribute.String;
-    secureLinkUrl: Schema.Attribute.String;
+    secure_link: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::secure-link.secure-link'
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    userDocumentId: Schema.Attribute.String;
-    userEmail: Schema.Attribute.String;
-    userFullName: Schema.Attribute.String;
-    userPhone: Schema.Attribute.String;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
 export interface ApiSecureLinkSecureLink extends Struct.CollectionTypeSchema {
   collectionName: 'secure_links';
   info: {
+    description: '';
     displayName: 'Secure link';
     pluralName: 'secure-links';
     singularName: 'secure-link';
@@ -738,18 +739,26 @@ export interface ApiSecureLinkSecureLink extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    label: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::secure-link.secure-link'
     > &
       Schema.Attribute.Private;
+    mimeType: Schema.Attribute.String;
+    name: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    secure_link_accesses: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::secure-link-access.secure-link-access'
+    >;
+    slug: Schema.Attribute.UID<'name'>;
+    stream: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    track: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    urlPattern: Schema.Attribute.String;
+    url: Schema.Attribute.String;
   };
 }
 
@@ -1287,6 +1296,10 @@ export interface PluginUsersPermissionsUser
     role: Schema.Attribute.Relation<
       'manyToOne',
       'plugin::users-permissions.role'
+    >;
+    secure_link_accesses: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::secure-link-access.secure-link-access'
     >;
     service_subscriptions: Schema.Attribute.Relation<
       'oneToMany',

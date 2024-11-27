@@ -4,18 +4,40 @@
   "info": {
     "singularName": "secure-link",
     "pluralName": "secure-links",
-    "displayName": "Secure link"
+    "displayName": "Secure link",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
-    "label": {
+    "name": {
       "type": "string"
     },
-    "urlPattern": {
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "url": {
       "type": "string"
+    },
+    "secure_link_accesses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::secure-link-access.secure-link-access",
+      "mappedBy": "secure_link"
+    },
+    "mimeType": {
+      "type": "string"
+    },
+    "stream": {
+      "type": "boolean",
+      "default": false
+    },
+    "track": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

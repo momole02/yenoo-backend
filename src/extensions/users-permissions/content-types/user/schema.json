@@ -110,6 +110,12 @@
     },
     "pwd": {
       "type": "string"
+    },
+    "secure_link_accesses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::secure-link-access.secure-link-access",
+      "mappedBy": "user"
     }
   }
 }
