@@ -754,6 +754,7 @@ export interface ApiSecureLinkSecureLink extends Struct.CollectionTypeSchema {
     >;
     slug: Schema.Attribute.UID<'name'>;
     stream: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    track: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
