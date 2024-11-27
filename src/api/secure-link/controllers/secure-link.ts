@@ -57,6 +57,12 @@ export default factories.createCoreController('api::secure-link.secure-link', ({
                 })
             }
 
+            if (link.redirect) {
+                ctx.response.redirect(
+                    link.url,
+                )
+            }
+
             ctx.status = resp.status
             for (const header in resp.headers) {
                 if ([

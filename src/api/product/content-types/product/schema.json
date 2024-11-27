@@ -32,14 +32,25 @@
       "inversedBy": "products"
     },
     "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "secure_links": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::secure-link.secure-link"
+    },
+    "related_posts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::blog-post.blog-post"
     }
   }
 }
