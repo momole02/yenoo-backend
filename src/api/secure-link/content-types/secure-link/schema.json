@@ -38,6 +38,10 @@
     "track": {
       "type": "boolean",
       "default": false
+    },
+    "redirect": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

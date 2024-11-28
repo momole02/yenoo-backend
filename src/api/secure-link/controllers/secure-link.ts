@@ -11,11 +11,11 @@ const logger = logging("secure-link / controllers")
 export default factories.createCoreController('api::secure-link.secure-link', ({ strapi }) => ({
     async find(ctx) {
         try {
-            if (!ctx.user) {
-                logger.error("access(): missing user in the context !")
-                ctx.status = 500
-                return;
-            }
+            // if (!ctx.user) {
+            //     logger.error("access(): missing user in the context !")
+            //     ctx.status = 500
+            //     return;
+            // }
             const user = ctx.user
 
             const { slug } = ctx.query
@@ -46,7 +46,7 @@ export default factories.createCoreController('api::secure-link.secure-link', ({
                 } : {},
             )
 
-            if (link.track) {
+            if (link.track && user) {
                 await strapi.documents(
                     "api::secure-link-access.secure-link-access"
                 ).create({
@@ -55,6 +55,12 @@ export default factories.createCoreController('api::secure-link.secure-link', ({
                         secure_link: link.documentId,
                     }
                 })
+            }
+
+            if (link.redirect) {
+                ctx.response.redirect(
+                    link.url,
+                )
             }
 
             ctx.status = resp.status
@@ -80,7 +86,5 @@ export default factories.createCoreController('api::secure-link.secure-link', ({
                 ctx.status = 500
             }
         }
-
-
     }
 }));

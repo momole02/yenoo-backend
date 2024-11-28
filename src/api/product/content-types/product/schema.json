@@ -32,14 +32,21 @@
       "inversedBy": "products"
     },
     "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "accessLinks": {
+      "type": "richtext"
+    },
+    "relatedArticles": {
+      "type": "richtext"
     }
   }
 }
