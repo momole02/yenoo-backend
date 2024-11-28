@@ -663,6 +663,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
+    accessLinks: Schema.Attribute.RichText;
     brief: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -681,14 +682,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'api::product-category.product-category'
     >;
     publishedAt: Schema.Attribute.DateTime;
-    related_posts: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::blog-post.blog-post'
-    >;
-    secure_links: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::secure-link.secure-link'
-    >;
+    relatedArticles: Schema.Attribute.RichText;
     slug: Schema.Attribute.UID<'label'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

@@ -42,15 +42,11 @@
         "audios"
       ]
     },
-    "secure_links": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::secure-link.secure-link"
+    "accessLinks": {
+      "type": "richtext"
     },
-    "related_posts": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::blog-post.blog-post"
+    "relatedArticles": {
+      "type": "richtext"
     }
   }
 }
