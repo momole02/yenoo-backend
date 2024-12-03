@@ -538,6 +538,41 @@ export interface ApiProductCategoryProductCategory
   };
 }
 
+export interface ApiProductFeedbackProductFeedback
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_feedbacks';
+  info: {
+    displayName: 'Product feedback';
+    pluralName: 'product-feedbacks';
+    singularName: 'product-feedback';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    feedback: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-feedback.product-feedback'
+    > &
+      Schema.Attribute.Private;
+    product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
+    publishedAt: Schema.Attribute.DateTime;
+    rating: Schema.Attribute.Integer;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface ApiProductLicenceValidityProductLicenceValidity
   extends Struct.CollectionTypeSchema {
   collectionName: 'product_licence_validities';
@@ -680,6 +715,10 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     product_category: Schema.Attribute.Relation<
       'manyToOne',
       'api::product-category.product-category'
+    >;
+    product_feedbacks: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-feedback.product-feedback'
     >;
     publishedAt: Schema.Attribute.DateTime;
     relatedArticles: Schema.Attribute.RichText;
@@ -1292,6 +1331,10 @@ export interface PluginUsersPermissionsUser
         minLength: 6;
       }>;
     phone: Schema.Attribute.String;
+    product_feedbacks: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-feedback.product-feedback'
+    >;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     pwd: Schema.Attribute.String;
@@ -1337,6 +1380,7 @@ declare module '@strapi/strapi' {
       'api::blog-post.blog-post': ApiBlogPostBlogPost;
       'api::licence-subscription.licence-subscription': ApiLicenceSubscriptionLicenceSubscription;
       'api::product-category.product-category': ApiProductCategoryProductCategory;
+      'api::product-feedback.product-feedback': ApiProductFeedbackProductFeedback;
       'api::product-licence-validity.product-licence-validity': ApiProductLicenceValidityProductLicenceValidity;
       'api::product-licence.product-licence': ApiProductLicenceProductLicence;
       'api::product-service.product-service': ApiProductServiceProductService;

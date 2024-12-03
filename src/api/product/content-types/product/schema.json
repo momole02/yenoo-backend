@@ -47,6 +47,12 @@
     },
     "relatedArticles": {
       "type": "richtext"
+    },
+    "product_feedbacks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-feedback.product-feedback",
+      "mappedBy": "product"
     }
   }
 }
