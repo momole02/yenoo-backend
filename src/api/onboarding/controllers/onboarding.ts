@@ -258,7 +258,7 @@ export default {
     }
   },
   updateAccountDetails: async (ctx, next) => {
-    if (!ctx.user) {
+    if (!ctx.state.user) {
       logger.warn("updateAccount(): user not found in context")
       ctx.throw(500, "Internal Server Error")
       return;
@@ -271,7 +271,7 @@ export default {
       enterpriseName: Joi.string().allow(null).allow(""),
       is2FAEnabled: Joi.boolean(),
     })
-    const user = ctx.user
+    const user = ctx.state.user
     const result = schema.validate(ctx.request.body)
     if (result.error) {
       logger.error("updateAccount(): failed to validate schema", { error: result.error })
@@ -296,12 +296,12 @@ export default {
     ctx.status = 200
   },
   getAccountDetails: async (ctx, next) => {
-    if (!ctx.user) {
+    if (!ctx.state.user) {
       logger.warn("getAccountDetails(): user not found in context")
       ctx.throw(500, "Internal Server Error")
       return;
     }
-    const user = ctx.user
+    const user = ctx.state.user
     ctx.status = 200
     ctx.body = {
       firstName: user.firstName,
@@ -314,12 +314,12 @@ export default {
     }
   },
   changePassword: async (ctx, next) => {
-    if (!ctx.user) {
+    if (!ctx.state.user) {
       logger.warn("getAccountDetails(): user not found in context")
       ctx.throw(500, "Internal Server Error")
       return;
     }
-    const user = ctx.user
+    const user = ctx.state.user
     const schema = Joi.object({
       oldPassword: Joi.string().required(),
       newPassword: Joi.string().required(),

@@ -11,12 +11,12 @@ const logger = logging("secure-link / controllers")
 export default factories.createCoreController('api::secure-link.secure-link', ({ strapi }) => ({
     async find(ctx) {
         try {
-            // if (!ctx.user) {
+            // if (!ctx.state.user) {
             //     logger.error("access(): missing user in the context !")
             //     ctx.status = 500
             //     return;
             // }
-            const user = ctx.user
+            const user = ctx.state.user
 
             const { slug } = ctx.query
             if (!slug) {
