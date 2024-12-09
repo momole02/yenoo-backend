@@ -21,7 +21,7 @@ export default (config,) => {
                         documentId: data.documentId
                     })
                 if (user) {
-                    context.user = user;
+                    context.state.user = user;
                 }
             }
         } else {

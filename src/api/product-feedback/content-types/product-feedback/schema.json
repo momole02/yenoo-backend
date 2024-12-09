@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_feedbacks",
+  "info": {
+    "singularName": "product-feedback",
+    "pluralName": "product-feedbacks",
+    "displayName": "Product feedback"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "feedback": {
+      "type": "text"
+    },
+    "rating": {
+      "type": "integer"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "product_feedbacks"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "product_feedbacks"
+    }
+  }
+}

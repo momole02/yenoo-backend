@@ -116,6 +116,12 @@
       "relation": "oneToMany",
       "target": "api::secure-link-access.secure-link-access",
       "mappedBy": "user"
+    },
+    "product_feedbacks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-feedback.product-feedback",
+      "mappedBy": "user"
     }
   }
 }
