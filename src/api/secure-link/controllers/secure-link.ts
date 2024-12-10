@@ -90,6 +90,11 @@ export default factories.createCoreController('api::secure-link.secure-link', ({
                     )
                 }
             }
+            if(link.content_disposition) {
+                ctx.set(
+                    "Content-Disposition" , link.content_disposition,
+                )
+            }
             ctx.body = resp.data
         } catch (error) {
             if (error instanceof AxiosError) {

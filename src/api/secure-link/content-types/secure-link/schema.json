@@ -42,6 +42,9 @@
     "redirect": {
       "type": "boolean",
       "default": false
+    },
+    "content_disposition": {
+      "type": "string"
     }
   }
 }
