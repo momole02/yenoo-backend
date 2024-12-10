@@ -18,11 +18,27 @@ export default factories.createCoreController('api::secure-link.secure-link', ({
             // }
             const user = ctx.state.user
 
-            const { slug } = ctx.query
-            if (!slug) {
-                logger.warn("access(): missing slug")
+            const { slug, userId, slt } = ctx.query
+            if (!slug || !userId || !slt) {
+                logger.warn("find(): missing required query params (slug, userId, slt)")
                 ctx.status = 400
                 return;
+            }
+
+            const result = await strapi.documents(
+                "plugin::users-permissions.user"
+            ).findMany({
+                filters: {
+                    id: userId,
+                    secureLinksToken: slt,
+                }
+            })
+            if(!result.length) {
+                logger.warn("find(): access denied" , {
+                    userId, slt, slug,
+                })
+                ctx.status = 401
+                return
             }
 
             const links = await strapi.documents(
@@ -73,6 +89,11 @@ export default factories.createCoreController('api::secure-link.secure-link', ({
                         header, resp.headers[header],
                     )
                 }
+            }
+            if(link.content_disposition) {
+                ctx.set(
+                    "Content-Disposition" , link.content_disposition,
+                )
             }
             ctx.body = resp.data
         } catch (error) {

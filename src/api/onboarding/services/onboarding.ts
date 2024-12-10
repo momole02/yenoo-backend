@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken"
 import logging from "logging";
 import mj from "node-mailjet";
-import { IsEmailPhoneUniqueArgs, JwtTokenData, SendOTPEmailArgs } from "../types";
+import {GenerateSecureLinksTokenArgs, IsEmailPhoneUniqueArgs, JwtTokenData, SendOTPEmailArgs} from "../types";
+import {createHash} from "node:crypto";
 
 
 const logger = logging("onboarding / services")
@@ -32,18 +33,16 @@ export default () => ({
         return found.length == 0
     },
 
-    issueJwtToken(data: JwtTokenData) {
+    issueJwtToken: function (data: JwtTokenData) {
         const encoded = JSON.stringify(data)
         // const jwtString = jwt.sign(
         //     encoded,
         //     strapi.config.get("plugin::users-permissions.jwtSecret")
         // )
-        const jwtString = strapi.plugins["users-permissions"]
+        return strapi.plugins["users-permissions"]
             .services
             .jwt
             .issue(data)
-
-        return jwtString
     },
 
     checkJwtToken(token: string): JwtTokenData {
@@ -137,7 +136,27 @@ export default () => ({
                 error)
             return false
         }
+    },
+
+    async generateSecureLinksToken({
+        userDocumentId,
+    }: GenerateSecureLinksTokenArgs) {
+        const slTokenLength = strapi.config.get(
+            "api.secureLinks.tokenLength"
+        )
+        const timestamp = new Date().getTime()
+        const token = createHash("sha256")
+            .update(`${userDocumentId}${timestamp}`)
+            .digest("hex")
+            .substring(0, Number(slTokenLength))
+
+        await strapi.documents("plugin::users-permissions.user").update({
+            documentId: userDocumentId,
+            data: {
+                 secureLinksToken: token
+            }
+        })
+
+        return token
     }
-
-
 });

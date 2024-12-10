@@ -777,6 +777,7 @@ export interface ApiSecureLinkSecureLink extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
+    content_disposition: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1347,6 +1348,7 @@ export interface PluginUsersPermissionsUser
       'oneToMany',
       'api::secure-link-access.secure-link-access'
     >;
+    secureLinksToken: Schema.Attribute.String;
     service_subscriptions: Schema.Attribute.Relation<
       'oneToMany',
       'api::service-subscription.service-subscription'
