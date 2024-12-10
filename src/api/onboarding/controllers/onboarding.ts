@@ -151,7 +151,6 @@ export default {
 
     const user = searchResult[0]
     const res = await bcrypt.compare(data.password, user.pwd)
-    console.log({ res })
     if (!res) {
       logger.error(`auth(): invalid password for ${user.firstName} ${user.lastName}`, {
         data,
@@ -169,9 +168,17 @@ export default {
         id: user.id,
         documentId: user.documentId,
       })
+
+      // generate the token for secure links
+      const slt = await strapi.service(
+          "api::onboarding.onboarding"
+      ).generateSecureLinksToken({
+        userDocumentId: user.documentId,
+      })
+
       ctx.status = 200 // OK
       ctx.body = {
-        jwt, user
+        jwt, slt , user
       }
     } else {
       const twoFactorAuthCode = `${Math.ceil(Math.random() * 90000 + 10000)}`;
@@ -252,9 +259,16 @@ export default {
       documentId: user.documentId,
     })
 
+    // generate the token for secure links
+    const slt = await strapi.service(
+        "api::onboarding.onboarding"
+    ).generateSecureLinksToken({
+      userDocumentId: user.documentId,
+    })
+
     ctx.status = 200 // OK
     ctx.body = {
-      jwt, user
+      jwt, slt, user
     }
   },
   updateAccountDetails: async (ctx, next) => {

@@ -7,6 +7,9 @@ export default ({ env }) => ({
       name: env("MAILJET_SENDER_NAME", "Yenoo Team"),
     },
   },
+  secureLinks: {
+    tokenLength: env("SL_TOKEN_LENGTH", 6),
+  },
   rest: {
     defaultLimit: 25,
     maxLimit: 100,

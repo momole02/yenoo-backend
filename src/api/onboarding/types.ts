@@ -12,3 +12,7 @@ export interface JwtTokenData {
 export interface SendOTPEmailArgs {
     userDocumentId: string;
 }
+
+export interface GenerateSecureLinksTokenArgs {
+    userDocumentId: string;
+}

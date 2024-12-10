@@ -1347,6 +1347,7 @@ export interface PluginUsersPermissionsUser
       'oneToMany',
       'api::secure-link-access.secure-link-access'
     >;
+    secureLinksToken: Schema.Attribute.String;
     service_subscriptions: Schema.Attribute.Relation<
       'oneToMany',
       'api::service-subscription.service-subscription'

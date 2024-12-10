@@ -122,6 +122,9 @@
       "relation": "oneToMany",
       "target": "api::product-feedback.product-feedback",
       "mappedBy": "user"
+    },
+    "secureLinksToken": {
+      "type": "string"
     }
   }
 }
